@@ -27,14 +27,6 @@
       return {
         data: JSON.parse(JSON.stringify(data)),
         id: 0,
-        times: [],
-        animateFrame: 0,
-        nowTime: 0,
-        diffTime: 0,
-        startTime: 0,
-        isTrainingLap: true,
-        beforeLapMinutes: 0,
-        isRunning: false,
         taskListRef: null,
         database: null,
       }
@@ -57,20 +49,24 @@
     methods: {
       top_append() {
         let new_id = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
-          return parseInt(v.split(':')[1])})) + 1
-        this.$prompt('Please input your task', 'New Task', {
-          confirmButtonText: 'OK',
+          return parseInt(v.split(':')[1]); })) + 1;
+        let placeholder = 'New task'
+        this.$alert(`<form name="append_task" onsubmit="return false">
+          <input class="edit_form" name="task_name" placeholder="${placeholder}"></input>`,
+          'New Task', {
+          dangerouslyUseHTMLString: true,
+          showCancelButton: true,
           cancelButtonText: 'Cancel',
-          inputErrorMessage: 'Invalid'
         }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: 'New task is:' + value
-          });
-          const newChild = { id: new_id, label: value, status: 'wip', children: [] };
+          let append_form = document.forms.append_task;
+          const newChild = { id: new_id, label: append_form.task_name.value, status: 'wip', children: [] };
           let new_key =  Math.max(...Object.keys(this.data)) + 1;
           this.data[new_key] = newChild;
           this.taskListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
+          this.$message({
+            type: 'success',
+            message: 'New task is:' + append_form.task_name.value
+          });
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -81,22 +77,26 @@
 
       append(data) {
         let new_id = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
-          return parseInt(v.split(':')[1])})) + 1
-        this.$prompt('Please input your task', 'New Task', {
-          confirmButtonText: 'OK',
+          return parseInt(v.split(':')[1]); })) + 1;
+        let placeholder = 'New task'
+        this.$alert(`<form name="append_task" onsubmit="return false">
+          <input class="edit_form" name="task_name" placeholder="${placeholder}"></input>`,
+          'New Task', {
+          dangerouslyUseHTMLString: true,
+          showCancelButton: true,
           cancelButtonText: 'Cancel',
-          inputErrorMessage: 'Invalid'
         }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: 'New task is:' + value
-          });
-          const newChild = { id: new_id, label: value, status: 'wip', children: [] };
+          let append_form = document.forms.append_task;
+          const newChild = { id: new_id, label: append_form.task_name.value, status: 'wip', children: [] };
           if (!data.children) {
             this.$set(data, 'children', []);
           }
           data.children.push(newChild);
           this.taskListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
+          this.$message({
+            type: 'success',
+            message: 'New task is:' + edit_form.task_name.value
+          });
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -114,18 +114,20 @@
       },
 
       edit(data) {
-        this.$prompt('Please input your task', 'Edit Task', {
-          confirmButtonText: 'OK',
+        this.$alert(`<form name="edit_task" onsubmit="return false">
+          <input class="edit_form" name="task_name" placeholder="${data.label}"></input>`,
+          'Edit Task', {
+          dangerouslyUseHTMLString: true,
+          showCancelButton: true,
           cancelButtonText: 'Cancel',
-          inputErrorMessage: 'Invalid',
-          inputValue: data.label
         }).then(({ value }) => {
+          let edit_form = document.forms.edit_task;
+          data.label = edit_form.task_name.value;
+          this.taskListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
           this.$message({
             type: 'success',
-            message: 'New task is:' + value
+            message: 'New task is:' + edit_form.task_name.value
           });
-          data.label = value;
-          this.taskListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -161,5 +163,16 @@
 
   .tasklisth1 {
     display: inline;
+  }
+
+  .edit_form {
+    border:0;
+    padding:10px;
+    font-size:1.3em;
+    font-family:Arial, sans-serif;
+    color: #606266;
+    border:solid 1px #ccc;
+    margin:0 0 20px;
+    width:300px;
   }
 </style>
