@@ -57,8 +57,9 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-import moment from 'moment'
+  import firebase from 'firebase'
+  import moment from 'moment'
+  const re = new RegExp('"id":([0-9]+)', 'g');
   export default {
     data() {
       return {
@@ -80,7 +81,7 @@ import moment from 'moment'
       var _this = this;
       this.eventListRef.on('value', function(snapshot) {
         if (snapshot.val() == null) {
-          _this.eventList = []
+          _this.eventList = [];
         } else {
           _this.eventList = snapshot.val(); // データに変化が起きたときに再取得する
         }
@@ -92,30 +93,37 @@ import moment from 'moment'
         if (this.eventName == '' || this.onceDate == '' || (this.radio == 2 && this.dateRange == '')) {
           this.$message.error('空欄があるぞ.');
         }
-        let tmp_notif = 1
+        let tmp_notif = 1;
         if (!this.notif) {
-          tmp_notif = 0
+          tmp_notif = 0;
         }
+        
         let event = {
           eventName: this.eventName,
           detail: this.detail,
           notif: tmp_notif,
-          
-          timePick: this.timePick.map(function(x) {
-            return moment(x).format('HH:mm');
-          }),
-          onceDate: this.onceDate
+          timePick: this.timePick.map(function(x) { return moment(x).format('HH:mm'); }),
+          onceDate: moment(this.onceDate).format("YYYY-MM-DD")
         }
         
+        let new_id = 1;
+        if (!(Object.keys(this.eventList).length === 0)) {
+          new_id = Math.max(...JSON.stringify(this.eventList).match(re).map(function(v) {
+            return parseInt(v.split(':')[1]);})) + 1;
+        }
+
         if (!this.dateRange == '') {
           while (this.onceDate <= this.dateRange[1]) {
-            this.eventListRef.push(event)
+            event.id = new_id;
+            this.eventListRef.push(event);
             event.onceDate = moment(new Date(this.onceDate.setDate(this.onceDate.getDate() + 7))).format("YYYY-MM-DD");
+            new_id += 1;
             console.log(event);
           }
         } else {
+          event.id = new_id;
           event.onceDate = moment(this.onceDate).format("YYYY-MM-DD");
-          this.eventListRef.push(event)
+          this.eventListRef.push(event);
           console.log(event, this.dateRange);
         }
         this.$router.push('calendar');

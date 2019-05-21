@@ -27,6 +27,7 @@
     <h3>{{ selectedDay.format("YYYY年MM月DD日(ddd)") }}</h3>
     <div v-for="e in selectedDayEvents" class="ml-2">
       <el-button type="text" @click="eventOpen(e)">{{ e.eventName }}</el-button>
+      <el-button type="danger" @click="eventDelete(e)">削除</el-button>
     </div>
   </div>
 </template>
@@ -58,7 +59,7 @@
       var _this = this;
       this.eventListRef.on('value', function(snapshot) {
         if (snapshot.val() == null) {
-          _this.data = []
+          _this.data = [];
           _this.evebtListRef.set(JSON.parse(JSON.stringify(_this.data))); // JSON送信
         } else {
           _this.data = snapshot.val(); // データに変化が起きたときに再取得する
@@ -73,9 +74,30 @@
         });
       },
 
+      eventDelete(e) {
+        this.$confirm('削除してもいいですか?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          let index = Object.keys(this.data).find(key => this.data[key].id === e.id);
+          delete this.data[index];
+          this.eventListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
+          this.$message({
+            type: 'success',
+            message: 'Delete completed'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Delete canceled'
+          });          
+        });
+      },
+
       selectDay(day, events) {
         this.selectedDay = day;
-        this.selectedDayEvents = events
+        this.selectedDayEvents = events;
       },
 
       getMonthName: function(month) {
@@ -158,7 +180,7 @@
               for (let k in this.data) {
                 let event = this.data[k];
                 if (todayFormat == event.onceDate) {
-                  dayEvents.push(event)
+                  dayEvents.push(event);
                 }
               }
               week[d] = {day: dayIdx, dd: today, events: dayEvents};

@@ -20,7 +20,7 @@
 
 <script>
   import firebase from 'firebase'
-  let re = new RegExp('"id":([0-9]+)', 'g');
+  const re = new RegExp('"id":([0-9]+)', 'g');
   export default {
     data() {
       const data = [];
@@ -56,7 +56,7 @@
 
     methods: {
       top_append() {
-        let hoge = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
+        let new_id = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
           return parseInt(v.split(':')[1])})) + 1
         this.$prompt('Please input your task', 'New Task', {
           confirmButtonText: 'OK',
@@ -67,7 +67,7 @@
             type: 'success',
             message: 'New task is:' + value
           });
-          const newChild = { id: hoge, label: value, status: 'wip', children: [] };
+          const newChild = { id: new_id, label: value, status: 'wip', children: [] };
           let new_key =  Math.max(...Object.keys(this.data)) + 1;
           this.data[new_key] = newChild;
           this.taskListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
@@ -80,7 +80,7 @@
       },
 
       append(data) {
-        let hoge = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
+        let new_id = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
           return parseInt(v.split(':')[1])})) + 1
         this.$prompt('Please input your task', 'New Task', {
           confirmButtonText: 'OK',
@@ -91,7 +91,7 @@
             type: 'success',
             message: 'New task is:' + value
           });
-          const newChild = { id: hoge, label: value, status: 'wip', children: [] };
+          const newChild = { id: new_id, label: value, status: 'wip', children: [] };
           if (!data.children) {
             this.$set(data, 'children', []);
           }
