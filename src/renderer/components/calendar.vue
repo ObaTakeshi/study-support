@@ -13,10 +13,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="weeks in calendar">
-          <td v-for="day in weeks">
+        <tr v-for="(weeks, windex) in calendar">
+          <td v-for="(day, dindex) in weeks">
             <el-badge :value=day.events.length :hidden=!Boolean(day.events.length) class="item" type="primary">
-              <el-button type="text" @click="selectDay(day.dd, day.events)">
+              <el-button type="text" @click="selectDay(day.dd, day.events, windex, dindex)">
                 {{ day.day }}
               </el-button>
             </el-badge>
@@ -25,10 +25,16 @@
       </tbody>
     </table>
     <h3>{{ selectedDay.format("YYYY年MM月DD日(ddd)") }}</h3>
-    <div v-for="e in selectedDayEvents" class="ml-2">
-      <el-button type="text" @click="eventOpen(e)">{{ e.eventName }}</el-button>
-      <el-button type="danger" @click="eventDelete(e)">削除</el-button>
-    </div>
+    <el-table :data="selectedDayEvents" height="200" style="width: 100%">
+      <el-table-column prop="timePick" label="Time" width="80"></el-table-column>
+      <el-table-column prop="eventName" label="Name" width="140"></el-table-column>
+      <el-table-column prop="detail" label="Detail" width="500"></el-table-column>
+      <el-table-column fixed="right" label="" width="60">
+        <template slot-scope="scope">
+          <el-button @click="eventDelete(scope)" type="text" size="small">Delete</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -43,6 +49,8 @@
         calData: {year: 0, month: 0},
         selectedDay: moment(),
         selectedDayEvents: [],
+        selectedWeekIndex: 0,
+        selectedDayIndex: 0,
         eventListRef: null,
         database: null,
         data: [],
@@ -80,9 +88,12 @@
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          let index = Object.keys(this.data).find(key => this.data[key].id === e.id);
+          console.log(e.row.id);
+          let index = Object.keys(this.data).find(key => this.data[key].id === e.row.id);
           delete this.data[index];
           this.eventListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
+          this.selectDay(this.calendar[this.selectedWeekIndex][this.selectedDayIndex].dd,
+                         this.calendar[this.selectedWeekIndex][this.selectedDayIndex].events);
           this.$message({
             type: 'success',
             message: 'Delete completed'
@@ -95,9 +106,11 @@
         });
       },
 
-      selectDay(day, events) {
+      selectDay(day, events, windex, dindex) {
         this.selectedDay = day;
         this.selectedDayEvents = events;
+        this.selectedWeekIndex = windex;
+        this.selectedDayIndex = dindex;
       },
 
       getMonthName: function(month) {
@@ -180,7 +193,9 @@
               for (let k in this.data) {
                 let event = this.data[k];
                 if (todayFormat == event.onceDate) {
-                  dayEvents.push(event);
+                  let ConvertedTimePickEvent = event;
+                  ConvertedTimePickEvent.timePick = event.timePick[0] + ' ~ ' + event.timePick[1];
+                  dayEvents.push(ConvertedTimePickEvent);
                 }
               }
               week[d] = {day: dayIdx, dd: today, events: dayEvents};
