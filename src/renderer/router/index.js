@@ -26,6 +26,11 @@ export default new Router({
       component: require('@/components/newEvent').default
     },
     {
+      path: '/markdownEditor',
+      name: 'markdownEditor',
+      component: require('@/components/markdownEditor').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
