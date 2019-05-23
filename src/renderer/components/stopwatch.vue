@@ -4,11 +4,12 @@
     <div class="row">
       <div class="col-sm-6 text-center">
         <h1>
+          <!-- ポモドーロ・テクニック -->
           <div v-if="isTrainingLap">
-            <font color="#F56C6C">Train time</font>
+            <font color="#F56C6C">Training time</font>
           </div>
           <div v-else>
-            <font color="#67C23A">Break time</font>
+            <font color="#67C23A">Breaking time</font>
           </div>
         </h1>
         <h2>
@@ -101,10 +102,12 @@
       },
       // lap timeを計算
       lapMinutes: function() {
-        let trainingMinutes = this.isTrainingLap ? 2 : 5;
+        let trainingMinutes = this.isTrainingLap ? 25 : 5;
         let nowLapMinutes = Math.floor(this.diffTime / 1000 / 60) % trainingMinutes;
         if (this.beforeLapMinutes > nowLapMinutes) {
           this.isTrainingLap = !this.isTrainingLap;
+          let notifMsg = this.isTrainingLap ? 'Training' : 'Breaking'
+          new Notification(notifMsg + "time");          
         }
         this.beforeLapMinutes = nowLapMinutes;
         return nowLapMinutes;
