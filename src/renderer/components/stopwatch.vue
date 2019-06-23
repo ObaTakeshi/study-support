@@ -84,6 +84,7 @@
         this.times = [];
         this.stopTimer();
         this.animateFrame = 0;
+        this.isTrainingLap = true;
       }
     },
 
@@ -106,8 +107,6 @@
         let nowLapMinutes = Math.floor(this.diffTime / 1000 / 60) % trainingMinutes;
         if (this.beforeLapMinutes > nowLapMinutes) {
           this.isTrainingLap = !this.isTrainingLap;
-          let notifMsg = this.isTrainingLap ? 'Training' : 'Breaking'
-          new Notification(notifMsg + "time");          
         }
         this.beforeLapMinutes = nowLapMinutes;
         return nowLapMinutes;
