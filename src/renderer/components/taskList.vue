@@ -59,6 +59,7 @@
           cancelButtonText: 'Cancel',
         }).then(({ value }) => {
           let append_task = document.forms.append_task.task_name.value;
+          document.forms.append_task.task_name.value = ''
           if (append_task == '') {
             append_task = placeholder;
           }
@@ -90,6 +91,7 @@
           cancelButtonText: 'Cancel',
         }).then(({ value }) => {
           let append_task = document.forms.append_task.task_name.value;
+          document.forms.append_task.task_name.value = '';
           if (append_task == '') {
             append_task = placeholder;
           }
@@ -129,6 +131,7 @@
           cancelButtonText: 'Cancel',
         }).then(({ value }) => {
           let edit_task = document.forms.edit_task.task_name.value;
+          document.forms.edit_task.task_name.value = '';
           if (!(edit_task == '')) {
             data.label = edit_task;
           }
