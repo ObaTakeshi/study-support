@@ -1,4 +1,7 @@
-import { app, BrowserWindow } from 'electron'
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import { app, BrowserWindow, shell, ipcMain } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -42,6 +45,23 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+ipcMain.on('print-to-pdf', function(event, fileName) {
+  const pdfPath = path.join(os.homedir(), fileName + '.pdf')
+  const win = BrowserWindow.fromWebContents(event.sender)
+  win.webContents.printToPDF({
+    marginsType: 0,
+    pageSize: 'A4',
+    printSelectionOnly: true
+  }, function(error, data) {
+    if (error) return console.log(error.message)
+    fs.writeFile(pdfPath, data, function(err) {
+      if (err) return console.log(err.message)
+      shell.openExternal('file://' + pdfPath)
+      event.sender.send('wrote-pdf', pdfPath)
+    })
+  })
 })
 
 /**

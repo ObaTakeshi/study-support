@@ -1,17 +1,21 @@
 <template>
   <div id="main">
-    <el-button size="mini" type="info" @click="save">save</el-button>
+    <el-input size="small" placeholder="Title" v-model="input"></el-input>
+    <el-button size="mini" type="primary" @click="save">save</el-button>
+    <el-button size="mini" type="primary" @click="createPDF">print to PDF</el-button>
     <mavon-editor v-model="value" language="en" :toolbars="toolbars" />
   </div>
 </template>
 
 <script>
+  import { ipcRenderer } from 'electron'
   import firebase from 'firebase'
   import mavonEditor from 'mavon-editor'
   require('mavon-editor/dist/css/index.css')
   export default {
     data() {
       return {
+        input: '',
         value: '',
         toolbars: {
           bold: true,
@@ -71,7 +75,20 @@
       save: function() {
         console.log(this.value);
         this.markdownRef.set(this.value);
+      },
+
+      createPDF: function() {
+        if (this.input == '') {
+          this.input = 'study-support'
+        }
+        ipcRenderer.send('print-to-pdf', this.input)
       }
+    },
+
+    mounted: function() {
+      ipcRenderer.on('wrote-pdf', function(event, path) {
+        console.log(path + ' saved')
+      })
     }
   }
 </script>
