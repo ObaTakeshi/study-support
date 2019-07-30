@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <stopwatch/>
-    <headerItem/>
+    <div class="top">
+      <stopwatch/>
+      <headerItem/>
+    </div>
       <router-view></router-view>
   </div>
 </template>
@@ -22,5 +24,12 @@
   /* CSS */
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  .top {
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 24;
   }
 </style>
