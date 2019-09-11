@@ -25,10 +25,14 @@
       </tbody>
     </table>
     <h3>{{ selectedDay.format("YYYY年MM月DD日(ddd)") }}</h3>
-    <el-table :data="selectedDayEvents" height="200" style="width: 100%">
-      <el-table-column prop="timePick" label="Time" width="80"></el-table-column>
-      <el-table-column prop="eventName" label="Name" width="140"></el-table-column>
-      <el-table-column prop="detail" label="Detail" width="500"></el-table-column>
+    <el-table :data="selectedDayEvents" style="width: 100%">
+      <!-- <el-table-column prop="timePick" label="Time" width="80"></el-table-column> -->
+      <el-table-column prop="eventName" label="Name" width="90"></el-table-column>
+      <el-table-column label="Detail" width="500">
+        <template slot-scope="scope">
+          <div v-html="compiledMarkdown(scope.row.detail)"></div>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="" width="60">
         <template slot-scope="scope">
           <el-button @click="eventDelete(scope)" type="text" size="small">Delete</el-button>
@@ -41,6 +45,7 @@
 <script>
   import firebase from 'firebase'
   import moment from 'moment'
+  import marked from 'marked'
   moment().locale("ja");
   export default {
     data() {
@@ -57,7 +62,7 @@
       }
     },
 
-    created: function (){
+    created: function () {
       var date = new Date();
       this.calData.year = date.getFullYear();
       this.calData.month = date.getMonth() + 1;
@@ -76,6 +81,11 @@
     },
 
     methods: {
+      compiledMarkdown: function (markdown) {
+        console.log(markdown);
+        return marked(markdown, { sanitize: true })
+      },
+
       eventOpen(e) {
         this.$alert(e.detail, e.eventName, {
           confirmButtonText: 'OK'

@@ -1,12 +1,12 @@
 <template>
   <div class="m-2">
-    <h3>イベント名</h3>
+    <h3>イベント</h3>
     <el-input v-model="eventName" placeholder="New event" clearable></el-input>
 
     <h3>備考</h3>
     <el-input
       type="textarea"
-      :rows="2"
+      :rows="15"
       placeholder="Please input"
       v-model="detail">
     </el-input>
@@ -20,7 +20,7 @@
     </el-switch>
     -->
     
-    <h3>時間</h3>
+    <!-- <h3>時間</h3>
     <el-time-picker
       is-range
       v-model="timePick"
@@ -28,15 +28,16 @@
       start-placeholder="Start time"
       end-placeholder="End time"
       format="HH:mm">
-    </el-time-picker>
+    </el-time-picker> -->
 
-    <h3>日にち</h3>
+    <h3>日時</h3>
     <el-date-picker
       v-model="onceDate"
       type="date"
       placeholder="Pick a day">
     </el-date-picker>
-    <h3>種別</h3>
+
+    <!-- <h3>種別</h3>
     <div>
       <el-radio v-model="radio" label="1">一回限り</el-radio>
       <el-radio v-model="radio" label="2">毎週</el-radio>
@@ -48,7 +49,7 @@
         start-placeholder="Start date"
         end-placeholder="End date">
       </el-date-picker>
-    </div>
+    </div> -->
 
     <div class="mt-2">
       <el-button @click="test">submit</el-button>
