@@ -128,7 +128,7 @@
 
       edit(data) {
         this.$alert(`<form name="edit_task" onsubmit="return false">
-          <input class="edit_form" name="task_name" placeholder="${data.label}"></input>`,
+          <input class="edit_form" name="task_name" value="${data.label}"></input>`,
           'Edit Task', {
           dangerouslyUseHTMLString: true,
           showCancelButton: true,
