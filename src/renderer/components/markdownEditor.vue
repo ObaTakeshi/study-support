@@ -1,8 +1,7 @@
 <template>
   <div id="main">
-    <el-input size="small" placeholder="Title" v-model="input"></el-input>
     <el-button size="mini" type="primary" @click="save">save</el-button>
-    <el-button size="mini" type="primary" @click="createPDF">print to PDF</el-button>
+    <!-- <el-button size="mini" type="primary" @click="createPDF">print to PDF</el-button> -->
     <mavon-editor v-model="value" language="en" :toolbars="toolbars" />
   </div>
 </template>
@@ -15,7 +14,6 @@
   export default {
     data() {
       return {
-        input: '',
         value: '',
         toolbars: {
           bold: true,
@@ -51,7 +49,7 @@
         },
         markdownRef: null,
         database: null,
-      };
+      }
     },
 
     components: {
@@ -59,29 +57,48 @@
     },
 
     created: function() {
-      this.database = firebase.database();
-      this.markdownRef = this.database.ref('markdown');
-      var _this = this;
+      this.database = firebase.database()
+      this.markdownRef = this.database.ref('markdown1')
+      var _this = this
       this.markdownRef.on('value', function(snapshot) {
         if (snapshot.val() == null) {
           _this.value = ""
         } else {
-          _this.value = snapshot.val(); // データに変化が起きたときに再取得する
+          _this.value = snapshot.val() // データに変化が起きたときに再取得する
         }
       });
     },
 
     methods: {
       save: function() {
-        console.log(this.value);
-        this.markdownRef.set(this.value);
+        // console.log(this.value)
+        this.markdownRef.set(this.value, function(error) {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log('saved')
+          }
+        });
       },
 
       createPDF: function() {
-        if (this.input == '') {
-          this.input = 'study-support'
-        }
-        ipcRenderer.send('print-to-pdf', this.input)
+        this.$prompt('Please PDF title', 'hoge', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+        }).then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: 'saved PDF' + value
+          });
+          console.log(value)
+          console.log(typeof(value))
+          ipcRenderer.send('print-to-pdf', value)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Input canceled'
+          });
+        });
       }
     },
 
