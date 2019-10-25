@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ストップウォッチ -->
-    <div class="row">
+    <div class="row delete-margin">
       <div class="col-sm-6 text-center">
         <h1>
           <!-- ポモドーロ・テクニック -->
@@ -23,7 +23,7 @@
         </h2>
       </div>
     </div>
-    <div class="row">
+    <div class="row delete-margin">
       <div class="col-6 text-center">
         <div v-if="!isRunning">
           <el-button size="mini" type="primary" @click="startTimer">start</el-button>
@@ -128,4 +128,8 @@
 
 <!-- style中身は省略 -->
 <style scoped>
+.delete-margin {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
 </style>

@@ -3,7 +3,7 @@
     <!-- ヘッダー -->
     <div class="header_obj">
       <el-menu :default-active="activeIndex" mode="horizontal">
-        <div class="row">
+        <div class="row delete-margin">
           <router-link to="taskList" class="col-sm-4 text-center">
             <el-menu-item index="1">Tasks</el-menu-item>
           </router-link>
@@ -31,4 +31,8 @@
 
 <!-- style中身は省略 -->
 <style scoped>
+.delete-margin {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
 </style>
