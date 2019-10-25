@@ -34,7 +34,11 @@
 
     created: function() {
       this.database = firebase.database();
-      this.taskListRef = this.database.ref('taskList');
+      if (process.env.NODE_ENV == 'development') {
+        this.taskListRef = this.database.ref('taskList_dev');
+      } else {
+        this.taskListRef = this.database.ref('taskList');
+      }
       var _this = this;
       this.taskListRef.on('value', function(snapshot) {
         if (snapshot.val() == null) {

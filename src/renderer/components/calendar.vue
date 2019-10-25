@@ -68,7 +68,11 @@
       this.calData.month = date.getMonth() + 1;
 
       this.database = firebase.database();
-      this.eventListRef = this.database.ref('eventList');
+      if (process.env.NODE_ENV == 'development') {
+        this.eventListRef = this.database.ref('eventList_dev');
+      } else {
+        this.eventListRef = this.database.ref('eventList');
+      }
       var _this = this;
       this.eventListRef.on('value', function(snapshot) {
         if (snapshot.val() == null) {

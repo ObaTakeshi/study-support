@@ -58,7 +58,11 @@
 
     created: function() {
       this.database = firebase.database()
-      this.markdownRef = this.database.ref('markdown1')
+      if (process.env.NODE_ENV == 'development') {
+        this.markdownRef = this.database.ref('markdown_dev')
+      } else {
+        this.markdownRef = this.database.ref('markdown')
+      }
       var _this = this
       this.markdownRef.on('value', function(snapshot) {
         if (snapshot.val() == null) {
