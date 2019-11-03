@@ -112,6 +112,10 @@
       ipcRenderer.on('wrote-pdf', function(event, path) {
         console.log(path + ' saved')
       })
+    },
+
+    beforeDestroy: function() {
+      this.save()
     }
   }
 </script>
