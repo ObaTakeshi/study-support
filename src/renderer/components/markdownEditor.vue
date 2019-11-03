@@ -49,6 +49,7 @@
         },
         markdownRef: null,
         database: null,
+        uid: firebase.auth().currentUser.uid
       }
     },
 
@@ -58,10 +59,11 @@
 
     created: function() {
       this.database = firebase.database()
+      this.uid = firebase.auth().currentUser.uid
       if (process.env.NODE_ENV == 'development') {
-        this.markdownRef = this.database.ref('markdown_dev')
+        this.markdownRef = this.database.ref('development/' + this.uid + '/markdown')
       } else {
-        this.markdownRef = this.database.ref('markdown')
+        this.markdownRef = this.database.ref('production/' + this.uid + '/markdown')
       }
       var _this = this
       this.markdownRef.on('value', function(snapshot) {

@@ -52,7 +52,7 @@
     </div> -->
 
     <div class="mt-2">
-      <el-button @click="test">submit</el-button>
+      <el-button @click="submit">submit</el-button>
     </div>
   </div>
 </template>
@@ -73,15 +73,17 @@
         dateRange: '',
         eventList: [],
         eventListRef: [],
+        uid: firebase.auth().currentUser.uid
       }
     },
 
     created: function() {
       this.database = firebase.database();
+      this.uid = firebase.auth().currentUser.uid
       if (process.env.NODE_ENV == 'development') {
-        this.eventListRef = this.database.ref('eventList_dev')
+        this.eventListRef = this.database.ref('development/' + this.uid + '/eventList');
       } else {
-        this.eventListRef = this.database.ref('eventList')
+        this.eventListRef = this.database.ref('production/' + this.uid + 'eventList');
       }
       var _this = this;
       this.eventListRef.on('value', function(snapshot) {
@@ -94,7 +96,7 @@
     },
 
     methods: {
-      test() {
+      submit() {
         if (this.eventName == '' || this.onceDate == '' || (this.radio == 2 && this.dateRange == '')) {
           this.$message.error('空欄があるぞ.');
         }
@@ -131,7 +133,7 @@
           this.eventListRef.push(event);
           console.log(event, this.dateRange);
         }
-        this.$router.push('calendar');
+        this.$emit('close')
       }
     }
   }

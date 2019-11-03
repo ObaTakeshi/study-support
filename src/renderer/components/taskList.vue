@@ -1,6 +1,7 @@
 <template>
   <div class="p-2">
     <!-- タスクリスト -->
+    <!-- <el-button @click="logout">logout</el-button> -->
     <h1 class="tasklisth1">Task List</h1>
     <el-button class="ml-2" size="mini" type="info" @click="top_append">Top Append</el-button>
     <div class="custom-tree-container mt-2">
@@ -29,15 +30,17 @@
         id: 0,
         taskListRef: null,
         database: null,
+        uid: firebase.auth().currentUser.uid
       }
     },
 
     created: function() {
       this.database = firebase.database();
+      this.uid = firebase.auth().currentUser.uid
       if (process.env.NODE_ENV == 'development') {
-        this.taskListRef = this.database.ref('taskList_dev');
+        this.taskListRef = this.database.ref('development/' + this.uid + '/taskList');
       } else {
-        this.taskListRef = this.database.ref('taskList');
+        this.taskListRef = this.database.ref('production/' + this.uid + '/taskList');
       }
       var _this = this;
       this.taskListRef.on('value', function(snapshot) {
@@ -51,6 +54,10 @@
     },
 
     methods: {
+      logout() {
+        firebase.auth().signOut()
+        this.$router.push('/login')
+      },
       top_append() {
         let new_id = Math.max(...JSON.stringify(this.data).match(re).map(function(v) {
           return parseInt(v.split(':')[1]); })) + 1;

@@ -20,12 +20,26 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
   export default {
     data() {
       return {
-        activeIndex: '1'
-      };
-    }
+        activeIndex: '1',
+        // isLogin: firebase.auth().currentUser
+      }
+    },
+
+    // created: function() {
+      // if (this.isLogin) {
+      //   // ログイン中
+      //   console.log('now login')
+      //   ;
+      // } else {
+      //   // ログアウト中
+      //   console.log('not login')
+      //   this.$router.push('login')
+      // }
+    // }
   }
 </script>
 

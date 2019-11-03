@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'study-support',
-      component: require('@/components/taskList').default
+      component: require('@/components/login').default
     },
     {
       path: '/taskList',
@@ -29,6 +29,21 @@ export default new Router({
       path: '/markdownEditor',
       name: 'markdownEditor',
       component: require('@/components/markdownEditor').default
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: require('@/components/login').default
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: require('@/components/signup').default
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: require('@/components/main').default
     },
     {
       path: '*',

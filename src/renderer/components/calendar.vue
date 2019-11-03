@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <el-button type="text" class="float-right"><router-link to="newEvent">+</router-link></el-button>
+    <!-- <el-button type="text" class="float-right"><router-link to="newEvent">+</router-link></el-button> -->
+    <el-button type="text" class="float-right" @click="showModal = true">+</el-button>
+    <newEvent v-if="showModal" @close="showModal = false"/>
     <div id="calendar-nav">
       <el-button type="text" @click="moveLastMonth"> < </el-button>
       <span>{{calData.year}} - {{getMonthName(calData.month)}}</span>
@@ -46,8 +48,12 @@
   import firebase from 'firebase'
   import moment from 'moment'
   import marked from 'marked'
+  import newEvent from './newEvent'
   moment().locale("ja");
   export default {
+    components: {
+      newEvent
+    },
     data() {
       return {
         weeks: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -59,6 +65,8 @@
         eventListRef: null,
         database: null,
         data: [],
+        showModal: false,
+        uid: firebase.auth().currentUser.uid
       }
     },
 
@@ -68,10 +76,11 @@
       this.calData.month = date.getMonth() + 1;
 
       this.database = firebase.database();
+      this.uid = firebase.auth().currentUser.uid
       if (process.env.NODE_ENV == 'development') {
-        this.eventListRef = this.database.ref('eventList_dev');
+        this.eventListRef = this.database.ref('development/' + this.uid + '/eventList');
       } else {
-        this.eventListRef = this.database.ref('eventList');
+        this.eventListRef = this.database.ref('production/' + this.uid + 'eventList');
       }
       var _this = this;
       this.eventListRef.on('value', function(snapshot) {
