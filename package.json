@@ -1,7 +1,7 @@
 {
   "name": "study-support",
-  "version": "0.1.5",
-  "author": "ObaTakeshi <s153025@matsu.shimane-u.ac.jp>",
+  "version": "0.9.0",
+  "author": "ObaTakeshi <t1233banana@yahoo.co.jp>",
   "description": "An electron-vue project",
   "license": null,
   "main": "./dist/electron/main.js",
