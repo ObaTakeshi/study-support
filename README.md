@@ -14,7 +14,7 @@ npm install
 npm run dev
 
 npm run build:mac  # build for mac
-npm run build:win
+npm run build:windows
 npm run build:linux
 ```
 
