@@ -48,13 +48,7 @@ function createWindow () {
         { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
         { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
         { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
-    ]}, {
-      label: "View",
-      submenu: [
-        { label: "Reload", accelerator: "CmdOrCtrl+R", click: function() { mainWindow.reload() }},
-        { label: "Developer Tools", accelerator: "Alt+CmdOrCtrl+I", click: function() { mainWindow.toggleDevTools(); }}
-      ]
-    }
+    ]}
   ]
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
