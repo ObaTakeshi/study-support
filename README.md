@@ -22,7 +22,7 @@ npm run build:linux
 Uncaught Error: Failed to load gRPC binary module because it was not installed for the current systemが出た時
 ```
 npm ls  # electronのversionを探す
-npm rebuild --runtime=electron --disturl=https://atom.io/download/electron --target=?.?.?
+npm rebuild --runtime=electron --disturl=https://atom.io/download/electron --target=?.?.? --target_libc=glibc --target_platform=linux
 ```
 
 ## electon-vue
