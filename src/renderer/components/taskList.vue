@@ -2,13 +2,12 @@
   <div class="p-2">
     <!-- タスクリスト -->
     <!-- <el-button @click="logout">logout</el-button> -->
-    <h1 class="tasklisth1">Task List</h1>
+    <!-- <h1 class="tasklisth1">Task List</h1> -->
     <el-button class="ml-2" size="mini" type="info" @click="top_append">Top Append</el-button>
     <div class="custom-tree-container mt-2">
       <div class="block">
         <el-tree
           :data="data"
-          show-checkbox
           node-key="id"
           default-expand-all
           :expand-on-click-node="false"
