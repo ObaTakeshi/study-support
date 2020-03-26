@@ -69,7 +69,7 @@
           return parseInt(v.split(':')[1]); })) + 1;
         let placeholder = 'New task'
         this.$alert(`<form name="append_task" onsubmit="return false">
-          <input class="edit_form" name="task_name" placeholder="${placeholder}"></input>`,
+          <input class="edit_form" name="task_name" placeholder="${placeholder}"></input></form>`,
           'New Task', {
           dangerouslyUseHTMLString: true,
           showCancelButton: true,
@@ -101,7 +101,7 @@
           return parseInt(v.split(':')[1]); })) + 1;
         let placeholder = 'New task'
         this.$alert(`<form name="append_task" onsubmit="return false">
-          <input class="edit_form" name="task_name" placeholder="${placeholder}"></input>`,
+          <input class="edit_form" name="task_name" placeholder="${placeholder}"></input></form>`,
           'New Task', {
           dangerouslyUseHTMLString: true,
           showCancelButton: true,
@@ -161,7 +161,7 @@
 
       edit(data) {
         this.$alert(`<form name="edit_task" onsubmit="return false">
-          <input class="edit_form" name="task_name" value="${data.label}"></input>`,
+          <input class="edit_form" name="task_name" value="${data.label}"></input></form>`,
           'Edit Task', {
           dangerouslyUseHTMLString: true,
           showCancelButton: true,
