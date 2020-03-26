@@ -5,7 +5,7 @@
         <el-button size="mini" type="primary" @click="save">save</el-button>
       </div>
       <div class="offset-5 col-5">
-        <p class="last-saved-text">saved: {{ last_saved_date }}</p>
+        <span class="last-saved-text">saved: {{ last_saved_date }}</span>
       </div>
     </div>
     <!-- <el-button size="mini" type="primary" @click="createPDF">print to PDF</el-button> -->
