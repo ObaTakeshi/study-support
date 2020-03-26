@@ -27,20 +27,10 @@
       </tbody>
     </table>
     <h3>{{ selectedDay.format("YYYY年MM月DD日(ddd)") }}</h3>
-    <el-table :data="selectedDayEvents" style="width: 100%">
-      <!-- <el-table-column prop="timePick" label="Time" width="80"></el-table-column> -->
-      <el-table-column prop="eventName" label="Name" width="90"></el-table-column>
-      <el-table-column label="Detail" width="500">
-        <template slot-scope="scope">
-          <div v-html="compiledMarkdown(scope.row.detail)"></div>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="" width="60">
-        <template slot-scope="scope">
-          <el-button @click="eventDelete(scope)" type="text" size="small">Delete</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div v-for="(event) in selectedDayEvents">
+      <div v-html="compiledMarkdown(event.detail)"></div>
+      <el-button @click="eventDelete(event)" type="text" size="small">Delete</el-button>
+    </div>
   </div>
 </template>
 
@@ -95,14 +85,9 @@
 
     methods: {
       compiledMarkdown: function (markdown) {
-        console.log(markdown);
-        return marked(markdown, { sanitize: true })
-      },
-
-      eventOpen(e) {
-        this.$alert(e.detail, e.eventName, {
-          confirmButtonText: 'OK'
-        });
+        console.log(markdown)
+        // return markdown
+        return marked(markdown)
       },
 
       eventDelete(e) {
@@ -111,8 +96,8 @@
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          console.log(e.row.id);
-          let index = Object.keys(this.data).find(key => this.data[key].id === e.row.id);
+          console.log(e.id);
+          let index = Object.keys(this.data).find(key => this.data[key].id === e.id);
           delete this.data[index];
           this.eventListRef.set(JSON.parse(JSON.stringify(this.data))); // JSON送信
           this.selectDay(this.calendar[this.selectedWeekIndex][this.selectedDayIndex].dd,

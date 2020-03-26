@@ -1,9 +1,6 @@
 <template>
   <div class="m-2">
-    <h3>イベント</h3>
-    <el-input v-model="eventName" placeholder="New event" clearable></el-input>
-
-    <h3>備考</h3>
+    <h3>Content</h3>
     <el-input
       type="textarea"
       :rows="15"
@@ -11,45 +8,12 @@
       v-model="detail">
     </el-input>
 
-    <!--
-    <h3>通知</h3>
-    <el-switch
-      v-model="notif"
-      active-text="あり"
-      inactive-text="なし">
-    </el-switch>
-    -->
-    
-    <!-- <h3>時間</h3>
-    <el-time-picker
-      is-range
-      v-model="timePick"
-      selectableRange="00:00:00 - 23:59:59"
-      start-placeholder="Start time"
-      end-placeholder="End time"
-      format="HH:mm">
-    </el-time-picker> -->
-
-    <h3>日時</h3>
+    <h3>Date</h3>
     <el-date-picker
       v-model="onceDate"
       type="date"
       placeholder="Pick a day">
     </el-date-picker>
-
-    <!-- <h3>種別</h3>
-    <div>
-      <el-radio v-model="radio" label="1">一回限り</el-radio>
-      <el-radio v-model="radio" label="2">毎週</el-radio>
-    </div>
-    <div v-if="radio == 2">
-      <el-date-picker
-        v-model="dateRange"
-        type="daterange"
-        start-placeholder="Start date"
-        end-placeholder="End date">
-      </el-date-picker>
-    </div> -->
 
     <div class="mt-2">
       <el-button @click="submit">submit</el-button>
@@ -97,8 +61,9 @@
 
     methods: {
       submit() {
-        if (this.eventName == '' || this.onceDate == '' || (this.radio == 2 && this.dateRange == '')) {
-          this.$message.error('空欄があるぞ.');
+        if (this.onceDate == '' || this.detail == '') {
+          this.$message.error('空欄があるぞ.')
+          return
         }
         let tmp_notif = 1;
         if (!this.notif) {
@@ -116,22 +81,22 @@
         let new_id = 1;
         if (!(Object.keys(this.eventList).length === 0)) {
           new_id = Math.max(...JSON.stringify(this.eventList).match(re).map(function(v) {
-            return parseInt(v.split(':')[1]);})) + 1;
+            return parseInt(v.split(':')[1]);})) + 1
         }
 
         if (!this.dateRange == '') {
           while (this.onceDate <= this.dateRange[1]) {
-            event.id = new_id;
+            event.id = new_id
             this.eventListRef.push(event);
             event.onceDate = moment(new Date(this.onceDate.setDate(this.onceDate.getDate() + 7))).format("YYYY-MM-DD");
             new_id += 1;
-            console.log(event);
+            console.log(event)
           }
         } else {
           event.id = new_id;
-          event.onceDate = moment(this.onceDate).format("YYYY-MM-DD");
-          this.eventListRef.push(event);
-          console.log(event, this.dateRange);
+          event.onceDate = moment(this.onceDate).format("YYYY-MM-DD")
+          this.eventListRef.push(event)
+          console.log(event, this.dateRange)
         }
         this.$emit('close')
       }
