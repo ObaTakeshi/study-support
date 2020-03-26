@@ -47,7 +47,7 @@
       if (process.env.NODE_ENV == 'development') {
         this.eventListRef = this.database.ref('development/' + this.uid + '/eventList');
       } else {
-        this.eventListRef = this.database.ref('production/' + this.uid + 'eventList');
+        this.eventListRef = this.database.ref('production/' + this.uid + '/eventList');
       }
       var _this = this;
       this.eventListRef.on('value', function(snapshot) {
