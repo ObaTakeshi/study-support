@@ -21,6 +21,12 @@ npm run build:linux
 ## Error
 Uncaught Error: Failed to load gRPC binary module because it was not installed for the current systemが出た時
 ```
+# 新しい情報
+npm rebuild --runtime=electron --disturl=https://atom.io/download/electron --target=?.?.?
+```
+
+```
+# 古い情報
 npm ls  # electronのversionを探す
 npm rebuild --runtime=electron --disturl=https://atom.io/download/electron --target=?.?.? --target_libc=glibc --target_platform=linux
 ```
