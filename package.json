@@ -65,7 +65,7 @@
     "grpc": "^1.11.0",
     "html2hscript": "^2.0.1",
     "jquery": "^3.4.1",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "mavon-editor": "^2.7.4",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
